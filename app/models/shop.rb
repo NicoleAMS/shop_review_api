@@ -3,5 +3,5 @@ class Shop < ApplicationRecord
   has_many :reviews
   has_many :scores, through: :reviews
 
-  validates :name, presence: true
+  validates :name, :area_id, presence: true
 end
