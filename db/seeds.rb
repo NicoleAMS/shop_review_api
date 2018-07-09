@@ -6,4 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-3.times { FactoryGirl.create :area }
+Review.delete_all
+Shop.delete_all
+Area.delete_all
+
+6.times { FactoryGirl.create(:shop) }
+
+6.times { FactoryGirl.create(:review) }
