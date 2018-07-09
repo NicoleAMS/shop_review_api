@@ -17,4 +17,38 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
     it { should respond_with 200 }
   end
 
+  describe 'POST #create' do
+
+    context 'when successfully created' do
+      before(:each) do
+        shop = FactoryGirl.create(:shop)
+        @review_attributes = { name: 'Awesome Shop' }
+        post :create, { shop_id: shop.id, review: @review_attributes }
+      end
+
+      it 'renders the json representation for the score record just created' do
+        review_response = JSON.parse(response.body, symbolize_names: true)
+        expect(review_response[:data][:name]).to eql(@review_attributes[:name])
+      end
+
+      it { should respond_with 201 }
+    end
+
+    context 'when not successfully created' do
+      before(:each) do
+        shop = FactoryGirl.create(:shop)
+        @invalid_review_attributes = { name: '' }
+        post :create, { shop_id: shop.id, review: @invalid_review_attributes }
+      end
+
+      it 'renders an error' do
+        review_response = JSON.parse(response.body, symbolize_names: true)
+        expect(review_response[:status]).to eql("ERROR")
+        expect(review_response[:data][:name]).to include "can't be blank"
+      end
+
+      it { should respond_with 422 }
+    end
+  end
+
 end

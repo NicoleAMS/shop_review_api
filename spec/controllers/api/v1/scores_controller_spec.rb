@@ -17,4 +17,52 @@ RSpec.describe Api::V1::ScoresController, type: :controller do
     it { should respond_with 200 }
   end
 
+  describe 'GET #show' do
+    before(:each) do
+      @score = FactoryGirl.create(:score)
+      get :show, id: @score.id
+    end
+
+    it 'returns the information' do
+      score_response = JSON.parse(response.body, symbolize_names: true)
+      expect(score_response[:data][:name]).to eql @score.name
+    end
+
+    it { should respond_with 200 }
+  end
+
+  describe 'POST #create' do
+
+    context 'when successfully created' do
+      before(:each) do
+        review = FactoryGirl.create(:review)
+        @score_attributes = { name: 'Friendliness', value: 4 }
+        post :create, { review_id: review.id, score: @score_attributes }
+      end
+
+      it 'renders the json representation for the score record just created' do
+        score_response = JSON.parse(response.body, symbolize_names: true)
+        expect(score_response[:data][:name]).to eql(@score_attributes[:name])
+      end
+
+      it { should respond_with 201 }
+    end
+
+    context 'when not successfully created' do
+      before(:each) do
+        review = FactoryGirl.create(:review)
+        @invalid_score_attributes = { name: 'Friendliness', value: 14 }
+        post :create, { review_id: review.id, score: @invalid_score_attributes }
+      end
+
+      it 'renders an error' do
+        score_response = JSON.parse(response.body, symbolize_names: true)
+        expect(score_response[:status]).to eql("ERROR")
+        expect(score_response[:data][:value]).to include "must be less than or equal to 5"
+      end
+
+      it { should respond_with 422 }
+    end
+  end
+
 end
