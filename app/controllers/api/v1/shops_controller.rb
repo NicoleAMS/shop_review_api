@@ -7,7 +7,7 @@ class Api::V1::ShopsController < ApplicationController
 
   def show
     shop = Shop.find(params[:id])
-    reviews = Review.find_by(:shop_id => shop[:id])
+    reviews = Review.where(:shop_id => shop[:id])
     data = {
       id: shop.id,
       name: shop.name,

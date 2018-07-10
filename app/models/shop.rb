@@ -5,5 +5,5 @@ class Shop < ApplicationRecord
 
   accepts_nested_attributes_for :reviews
 
-  validates :name, :area_id, presence: true
+  validates :name, :area, presence: true
 end

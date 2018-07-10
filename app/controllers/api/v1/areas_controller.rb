@@ -7,7 +7,7 @@ class Api::V1::AreasController < ApplicationController
 
   def show
     area = Area.find(params[:id])
-    shops = Shop.find_by(:area_id => area[:id])
+    shops = Shop.where(:area_id => area[:id])
     data = {
       id: area.id,
       name: area.name,
