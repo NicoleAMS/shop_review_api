@@ -8,7 +8,7 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
       get :index
     end
 
-    it 'returns 4 records from the database' do
+    it 'returns 6 records from the database' do
       product_response = JSON.parse(response.body, symbolize_names: true)
       expect(product_response[:data].count).to eql(6)
       expect(product_response[:message]).to eql('Loaded shops')

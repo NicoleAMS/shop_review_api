@@ -22,8 +22,8 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
     context 'when successfully created' do
       before(:each) do
         shop = FactoryGirl.create(:shop)
-        @review_attributes = { name: 'Awesome Shop' }
-        post :create, { shop_id: shop.id, review: @review_attributes }
+        @review_attributes = FactoryGirl.attributes_for(:review)
+        post :create, { shop_id: shop.id, name: @review_attributes[:name] }, format: :json
       end
 
       it 'renders the json representation for the score record just created' do
@@ -38,7 +38,7 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
       before(:each) do
         shop = FactoryGirl.create(:shop)
         @invalid_review_attributes = { name: '' }
-        post :create, { shop_id: shop.id, review: @invalid_review_attributes }
+        post :create, { shop_id: shop.id, name: @invalid_review_attributes[:name] }
       end
 
       it 'renders an error' do

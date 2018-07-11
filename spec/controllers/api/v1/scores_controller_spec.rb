@@ -25,7 +25,7 @@ RSpec.describe Api::V1::ScoresController, type: :controller do
 
     it 'returns the information' do
       score_response = JSON.parse(response.body, symbolize_names: true)
-      expect(score_response[:data][:name]).to eql @score.name
+      expect(score_response[:data][:name]).to eql(@score.name)
     end
 
     it { should respond_with 200 }
