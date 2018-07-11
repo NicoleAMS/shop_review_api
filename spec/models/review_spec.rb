@@ -8,7 +8,7 @@ RSpec.describe Review, type: :model do
   it { should validate_presence_of(:name) }
 
   it { should respond_to(:shop_id) }
-  it { should validate_presence_of(:shop_id) }
+  it { should validate_presence_of(:shop) }
   it { should belong_to :shop }
   it { should have_many :scores }
 end

@@ -13,7 +13,7 @@ Area.delete_all
 
 # 6.times { FactoryGirl.create(:shop) }
 
-# 6.times { FactoryGirl.create(:review) }
+# 6.times { FactoryGirl.create(:score) }
 
 area1 = Area.create(name: 'Lewisham')
 

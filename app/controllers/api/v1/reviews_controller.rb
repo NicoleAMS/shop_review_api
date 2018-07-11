@@ -15,6 +15,17 @@ class Api::V1::ReviewsController < ApplicationController
     end
   end
 
+  def show
+    review = Review.find(params[:id])
+    scores = Score.where(:review_id => review[:id])
+    data = {
+      id: review.id,
+      name: review.name,
+      scores: [scores]
+      }
+    render json: {status: 'SUCCESS', message: 'Loaded review', data: data}, status: :ok
+  end
+
   private
 
   def review_params

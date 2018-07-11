@@ -17,6 +17,20 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
     it { should respond_with 200 }
   end
 
+  describe 'GET #show' do
+    before(:each) do
+      @review = FactoryGirl.create(:review)
+      get :show, id: @review.id
+    end
+
+    it 'returns the information' do
+      review_response = JSON.parse(response.body, symbolize_names: true)
+      expect(review_response[:data][:name]).to eql(@review.name)
+    end
+
+    it { should respond_with 200 }
+  end
+
   describe 'POST #create' do
 
     context 'when successfully created' do

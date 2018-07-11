@@ -8,7 +8,7 @@ RSpec.describe Shop, type: :model do
   it { should validate_presence_of(:name) }
 
   it { should respond_to(:area_id) }
-  it { should validate_presence_of(:area_id) }
+  it { should validate_presence_of(:area) }
   it { should belong_to :area }
 
   it { should have_many :reviews }

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       resources :shops, :only => [:index, :show] do
         resources :reviews, :only => [:create]
       end
-      resources :reviews, :only => [:index] do
+      resources :reviews, :only => [:index, :show] do
         resources :scores, :only => [:create]
       end
       resources :scores, :only => [:index, :show]
