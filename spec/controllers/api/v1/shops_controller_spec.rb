@@ -48,4 +48,18 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
       it { should respond_with 422 }
     end
   end
+
+  describe 'GET #show' do
+    before(:each) do
+      @shop = FactoryGirl.create(:shop)
+      get :show, id: @shop.id
+    end
+
+    it 'returns the information' do
+      shop_response = JSON.parse(response.body, symbolize_names: true)
+      expect(shop_response[:data][:name]).to eql(@shop.name)
+    end
+
+    it { should respond_with 200 }
+  end
 end
