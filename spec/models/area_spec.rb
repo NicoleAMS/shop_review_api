@@ -11,5 +11,3 @@ RSpec.describe Area, type: :model do
   it { should have_many :reviews }
   it { should have_many :scores }
 end
-
-

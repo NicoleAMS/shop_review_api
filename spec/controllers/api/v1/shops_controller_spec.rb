@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::ShopsController, type: :controller do
-
   describe 'GET #index' do
     before(:each) do
       6.times { FactoryGirl.create(:shop) }
@@ -18,12 +17,11 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
   end
 
   describe 'POST #create' do
-
     context 'when successfully created' do
       before(:each) do
         area = FactoryGirl.create(:area)
         @shop_attributes = { name: 'Oxfam' }
-        post :create, { area_id: area.id, shop: @shop_attributes }
+        post :create, area_id: area.id, shop: @shop_attributes
       end
 
       it 'renders the json representation for the score record just created' do
@@ -38,17 +36,16 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
       before(:each) do
         area = FactoryGirl.create(:area)
         @invalid_shop_attributes = { name: '' }
-        post :create, { area_id: area.id, shop: @invalid_shop_attributes }
+        post :create, area_id: area.id, shop: @invalid_shop_attributes
       end
 
       it 'renders an error' do
         shop_response = JSON.parse(response.body, symbolize_names: true)
-        expect(shop_response[:status]).to eql("ERROR")
+        expect(shop_response[:status]).to eql('ERROR')
         expect(shop_response[:data][:name]).to include "can't be blank"
       end
 
       it { should respond_with 422 }
     end
   end
-
 end

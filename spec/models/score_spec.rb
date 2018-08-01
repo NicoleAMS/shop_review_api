@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Score, type: :model do
-
   let(:score) { FactoryGirl.build :score }
   subject { score }
 
@@ -17,5 +16,4 @@ RSpec.describe Score, type: :model do
   it { should validate_presence_of(:review) }
 
   it { should belong_to :review }
-
 end

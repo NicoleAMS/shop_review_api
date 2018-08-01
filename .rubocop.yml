@@ -1,0 +1,46 @@
+# These are all the cops that are enabled in the default configuration.
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - "../vendor/**/*"
+    - "../db/schema.rb"
+    - "../db/migrate/*"
+    - "../lib/templates/**/*"
+    - "vendor/**/*"
+    - "db/schema.rb"
+    - "db/migrate/*"
+    - "lib/templates/**/*"
+
+Style/StringLiterals:
+  Description: 'Checks if uses of quotes match the configured preference.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#consistent-string-literals'
+  EnforcedStyle: single_quotes
+  Enabled: true
+
+Metrics/LineLength:
+  Description: 'Limit lines to 120 characters.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#80-character-limits'
+  Max: 120
+  Enabled: true
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+Layout/TrailingBlankLines:
+  Description: 'Checks trailing blank lines and final newline.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#newline-eof'
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Multi-line method chaining should be done with leading dots.
+Layout/DotPosition:
+  Enabled: true
+  EnforcedStyle: trailing
+
+Lint/EndAlignment:
+  AutoCorrect: true
+
+Style/FormatStringToken:
+  Enabled: false
