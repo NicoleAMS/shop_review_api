@@ -17,17 +17,30 @@ RSpec.describe Api::V1::ScoresController, type: :controller do
   end
 
   describe 'GET #show' do
-    before(:each) do
-      @score = FactoryGirl.create(:score)
-      get :show, id: @score.id
+    context 'when successfully loaded' do
+      before(:each) do
+        @score = FactoryGirl.create(:score)
+        get :show, id: @score.id
+      end
+
+      it 'returns the information' do
+        score_response = JSON.parse(response.body, symbolize_names: true)
+        expect(score_response[:data][:name]).to eql(@score.name)
+      end
+
+      it { should respond_with 200 }
     end
 
-    it 'returns the information' do
-      score_response = JSON.parse(response.body, symbolize_names: true)
-      expect(score_response[:data][:name]).to eql(@score.name)
-    end
+    context 'when not successfully loaded' do
+      before(:each) do
+        @score = FactoryGirl.create(:score)
+        get :show, id: (@score.id + 1000)
+      end
 
-    it { should respond_with 200 }
+      it 'raises a 404 error' do
+        response.response_code.should == 404
+      end
+    end
   end
 
   describe 'POST #create' do

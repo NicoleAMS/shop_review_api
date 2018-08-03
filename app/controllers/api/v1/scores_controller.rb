@@ -5,8 +5,12 @@ class Api::V1::ScoresController < ApplicationController
   end
 
   def show
-    score = Score.find(params[:id])
-    render json: { status: 'SUCCESS', message: 'Loaded score', data: score }, status: :ok
+    if Score.where(id: params[:id]).exists?
+      score = Score.find(params[:id])
+      render json: { status: 'SUCCESS', message: 'Loaded score', data: score }, status: :ok
+    else
+      render json: { status: 'ERROR', message: 'Score does not exist', data: nil }, status: 404
+    end
   end
 
   def create

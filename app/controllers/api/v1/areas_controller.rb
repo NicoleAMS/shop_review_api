@@ -5,15 +5,19 @@ class Api::V1::AreasController < ApplicationController
   end
 
   def show
-    area = Area.find(params[:id])
-    shops = Shop.where(area_id: area[:id])
-    data =
-      {
-        id: area.id,
-        name: area.name,
-        shops: [shops]
-      }
-    render json: { status: 'SUCCESS', message: 'Loaded area', data: data }, status: :ok
+    if Area.where(id: params[:id]).exists?
+      area = Area.find(params[:id])
+      shops = Shop.where(area_id: area[:id])
+      data =
+        {
+          id: area.id,
+          name: area.name,
+          shops: [shops]
+        }
+      render json: { status: 'SUCCESS', message: 'Loaded area', data: data }, status: :ok
+    else
+      render json: { status: 'ERROR', message: 'Area does not exist', data: nil }, status: 404
+    end
   end
 
   def create
@@ -26,16 +30,20 @@ class Api::V1::AreasController < ApplicationController
   end
 
   def total_area_value
-    total_value = { total_value: 0 }
-    area = Area.find(params[:id])
-    area.shops.map do |shop|
-      shop.reviews.map do |review|
-        review.scores.map do |score|
-          total_value[:total_value] += score.value
+    if Area.where(id: params[:id]).exists?
+      total_value = { total_value: 0 }
+      area = Area.find(params[:id])
+      area.shops.map do |shop|
+        shop.reviews.map do |review|
+          review.scores.map do |score|
+            total_value[:total_value] += score.value
+          end
         end
       end
+      render json: { status: 'SUCCESS', message: 'Loaded total value of shops in area', data: total_value }, status: :ok
+    else
+      render json: { status: 'ERROR', message: 'Area does not exist', data: nil }, status: 404
     end
-    render json: { status: 'SUCCESS', message: 'Loaded total value of shops in area', data: total_value }, status: :ok
   end
 
   private

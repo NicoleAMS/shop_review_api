@@ -50,16 +50,29 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before(:each) do
-      @shop = FactoryGirl.create(:shop)
-      get :show, id: @shop.id
+    context 'when successfully loaded' do
+      before(:each) do
+        @shop = FactoryGirl.create(:shop)
+        get :show, id: @shop.id
+      end
+
+      it 'returns the information' do
+        shop_response = JSON.parse(response.body, symbolize_names: true)
+        expect(shop_response[:data][:name]).to eql(@shop.name)
+      end
+
+      it { should respond_with 200 }
     end
 
-    it 'returns the information' do
-      shop_response = JSON.parse(response.body, symbolize_names: true)
-      expect(shop_response[:data][:name]).to eql(@shop.name)
-    end
+    context 'when not successfully loaded' do
+      before(:each) do
+        @shop = FactoryGirl.create(:shop)
+        get :show, id: (@shop.id + 1000)
+      end
 
-    it { should respond_with 200 }
+      it 'raises a 404 error' do
+        response.response_code.should == 404
+      end
+    end
   end
 end

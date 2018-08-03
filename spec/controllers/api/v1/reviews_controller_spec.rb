@@ -17,17 +17,30 @@ RSpec.describe Api::V1::ReviewsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before(:each) do
-      @review = FactoryGirl.create(:review)
-      get :show, id: @review.id
+    context 'when successfully loaded' do
+      before(:each) do
+        @review = FactoryGirl.create(:review)
+        get :show, id: @review.id
+      end
+
+      it 'returns the information' do
+        review_response = JSON.parse(response.body, symbolize_names: true)
+        expect(review_response[:data][:name]).to eql(@review.name)
+      end
+
+      it { should respond_with 200 }
     end
 
-    it 'returns the information' do
-      review_response = JSON.parse(response.body, symbolize_names: true)
-      expect(review_response[:data][:name]).to eql(@review.name)
-    end
+    context 'when not successfully loaded' do
+      before(:each) do
+        @review = FactoryGirl.create(:review)
+        get :show, id: (@review.id + 1000)
+      end
 
-    it { should respond_with 200 }
+      it 'raises a 404 error' do
+        response.response_code.should == 404
+      end
+    end
   end
 
   describe 'POST #create' do

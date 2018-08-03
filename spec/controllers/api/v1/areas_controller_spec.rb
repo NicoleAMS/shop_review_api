@@ -17,17 +17,30 @@ RSpec.describe Api::V1::AreasController, type: :controller do
   end
 
   describe 'GET #show' do
-    before(:each) do
-      @area = FactoryGirl.create(:area)
-      get :show, id: @area.id
+    context 'when successfully loaded' do
+      before(:each) do
+        @area = FactoryGirl.create(:area)
+        get :show, id: @area.id
+      end
+
+      it 'returns the information' do
+        area_response = JSON.parse(response.body, symbolize_names: true)
+        expect(area_response[:data][:name]).to eql @area.name
+      end
+
+      it { should respond_with 200 }
     end
 
-    it 'returns the information' do
-      area_response = JSON.parse(response.body, symbolize_names: true)
-      expect(area_response[:data][:name]).to eql @area.name
-    end
+    context 'when not successfully loaded' do
+      before(:each) do
+        @area = FactoryGirl.create(:area)
+        get :show, id: (@area.id + 1000)
+      end
 
-    it { should respond_with 200 }
+      it 'raises a 404 error' do
+        response.response_code.should == 404
+      end
+    end
   end
 
   describe 'POST #create' do
@@ -72,14 +85,29 @@ RSpec.describe Api::V1::AreasController, type: :controller do
       @score2 = FactoryGirl.create(:score, review: @review1, value: 3)
       @score3 = FactoryGirl.create(:score, review: @review2, value: 5)
       @score4 = FactoryGirl.create(:score, review: @review2, value: 3)
-      get :total_area_value, id: @area.id
     end
 
-    it 'returns the total area value in json format' do
-      area_response = JSON.parse(response.body, symbolize_names: true)
-      expect(area_response[:data][:total_value]).to eql(15)
+    context 'when successfully loaded' do
+      before(:each) do
+        get :total_area_value, id: @area.id
+      end
+
+      it 'returns the total area value in json format' do
+        area_response = JSON.parse(response.body, symbolize_names: true)
+        expect(area_response[:data][:total_value]).to eql(15)
+      end
+
+      it { should respond_with 200 }
     end
 
-    it { should respond_with 200 }
+    context 'when not successfully loaded' do
+      before(:each) do
+        get :total_area_value, id: (@area.id + 1000)
+      end
+
+      it 'raises a 404 error' do
+        response.response_code.should == 404
+      end
+    end
   end
 end

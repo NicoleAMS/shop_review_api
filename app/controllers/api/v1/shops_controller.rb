@@ -5,14 +5,18 @@ class Api::V1::ShopsController < ApplicationController
   end
 
   def show
-    shop = Shop.find(params[:id])
-    reviews = Review.where(shop_id: shop[:id])
-    data = {
-      id: shop.id,
-      name: shop.name,
-      reviews: [reviews]
-    }
-    render json: { status: 'SUCCESS', message: 'Loaded area', data: data }, status: :ok
+    if Shop.where(id: params[:id]).exists?
+      shop = Shop.find(params[:id])
+      reviews = Review.where(shop_id: shop[:id])
+      data = {
+        id: shop.id,
+        name: shop.name,
+        reviews: [reviews]
+      }
+      render json: { status: 'SUCCESS', message: 'Loaded area', data: data }, status: :ok
+    else
+      render json: { status: 'ERROR', message: 'Shop does not exist', data: nil }, status: 404
+    end
   end
 
   def create
