@@ -31,16 +31,12 @@ class Api::V1::AreasController < ApplicationController
 
   def total_area_value
     if Area.where(id: params[:id]).exists?
-      total_value = { total_value: 0 }
-      area = Area.find(params[:id])
-      area.shops.map do |shop|
-        shop.reviews.map do |review|
-          review.scores.map do |score|
-            total_value[:total_value] += score.value
-          end
-        end
-      end
-      render json: { status: 'SUCCESS', message: 'Loaded total value of shops in area', data: total_value }, status: :ok
+      @area = Area.find(params[:id])
+      total_value = @area.total_area_value(@area)
+      render json: {
+        status: 'SUCCESS', message: 'Loaded total value of shops in area',
+        data: { total_value: total_value }
+      }, status: :ok
     else
       render json: { status: 'ERROR', message: 'Area does not exist', data: nil }, status: 404
     end
