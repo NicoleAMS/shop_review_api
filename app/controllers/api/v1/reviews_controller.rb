@@ -17,11 +17,10 @@ class Api::V1::ReviewsController < ApplicationController
   def show
     if Review.where(id: params[:id]).exists?
       review = Review.find(params[:id])
-      scores = Score.where(review_id: review[:id])
       data = {
         id: review.id,
         name: review.name,
-        scores: [scores]
+        scores: [review.scores]
       }
       render json: { status: 'SUCCESS', message: 'Loaded review', data: data }, status: :ok
     else

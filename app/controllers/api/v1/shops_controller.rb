@@ -7,11 +7,10 @@ class Api::V1::ShopsController < ApplicationController
   def show
     if Shop.where(id: params[:id]).exists?
       shop = Shop.find(params[:id])
-      reviews = Review.where(shop_id: shop[:id])
       data = {
         id: shop.id,
         name: shop.name,
-        reviews: [reviews]
+        reviews: [shop.reviews]
       }
       render json: { status: 'SUCCESS', message: 'Loaded area', data: data }, status: :ok
     else

@@ -8,7 +8,7 @@ RSpec.describe Api::V1::AreasController, type: :controller do
     end
 
     it 'returns 4 records from the database' do
-      area_response = JSON.parse(response.body, symbolize_names: true)
+      area_response = json_response
       expect(area_response[:data].count).to eql(4)
       expect(area_response[:message]).to eql('Loaded areas')
     end
@@ -24,7 +24,7 @@ RSpec.describe Api::V1::AreasController, type: :controller do
       end
 
       it 'returns the information' do
-        area_response = JSON.parse(response.body, symbolize_names: true)
+        area_response = json_response
         expect(area_response[:data][:name]).to eql @area.name
       end
 
@@ -52,7 +52,7 @@ RSpec.describe Api::V1::AreasController, type: :controller do
       end
 
       it 'renders the json representation for the area record just created' do
-        area_response = JSON.parse(response.body, symbolize_names: true)
+        area_response = json_response
         expect(area_response[:data][:name]).to eql(@area_attributes[:name])
       end
 
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::AreasController, type: :controller do
       end
 
       it 'renders an error' do
-        area_response = JSON.parse(response.body, symbolize_names: true)
+        area_response = json_response
         expect(area_response[:status]).to eql('ERROR')
         expect(area_response[:data][:name]).to include "can't be blank"
       end
@@ -93,7 +93,7 @@ RSpec.describe Api::V1::AreasController, type: :controller do
       end
 
       it 'returns the total area value in json format' do
-        area_response = JSON.parse(response.body, symbolize_names: true)
+        area_response = json_response
         expect(area_response[:data][:total_value]).to eql(15)
       end
 

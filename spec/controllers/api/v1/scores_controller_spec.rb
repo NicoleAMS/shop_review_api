@@ -8,7 +8,7 @@ RSpec.describe Api::V1::ScoresController, type: :controller do
     end
 
     it 'returns 6 records from the database' do
-      product_response = JSON.parse(response.body, symbolize_names: true)
+      product_response = json_response
       expect(product_response[:data].count).to eql(6)
       expect(product_response[:message]).to eql('Loaded scores')
     end
@@ -24,7 +24,7 @@ RSpec.describe Api::V1::ScoresController, type: :controller do
       end
 
       it 'returns the information' do
-        score_response = JSON.parse(response.body, symbolize_names: true)
+        score_response = json_response
         expect(score_response[:data][:name]).to eql(@score.name)
       end
 
@@ -52,7 +52,7 @@ RSpec.describe Api::V1::ScoresController, type: :controller do
       end
 
       it 'renders the json representation for the score record just created' do
-        score_response = JSON.parse(response.body, symbolize_names: true)
+        score_response = json_response
         expect(score_response[:data][:name]).to eql(@score_attributes[:name])
       end
 
@@ -67,7 +67,7 @@ RSpec.describe Api::V1::ScoresController, type: :controller do
       end
 
       it 'renders an error' do
-        score_response = JSON.parse(response.body, symbolize_names: true)
+        score_response = json_response
         expect(score_response[:status]).to eql('ERROR')
         expect(score_response[:data][:value]).to include 'must be less than or equal to 5'
       end

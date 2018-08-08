@@ -8,7 +8,7 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
     end
 
     it 'returns 6 records from the database' do
-      product_response = JSON.parse(response.body, symbolize_names: true)
+      product_response = json_response
       expect(product_response[:data].count).to eql(6)
       expect(product_response[:message]).to eql('Loaded shops')
     end
@@ -25,7 +25,7 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
       end
 
       it 'renders the json representation for the score record just created' do
-        shop_response = JSON.parse(response.body, symbolize_names: true)
+        shop_response = json_response
         expect(shop_response[:data][:name]).to eql(@shop_attributes[:name])
       end
 
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
       end
 
       it 'renders an error' do
-        shop_response = JSON.parse(response.body, symbolize_names: true)
+        shop_response = json_response
         expect(shop_response[:status]).to eql('ERROR')
         expect(shop_response[:data][:name]).to include "can't be blank"
       end
@@ -57,7 +57,7 @@ RSpec.describe Api::V1::ShopsController, type: :controller do
       end
 
       it 'returns the information' do
-        shop_response = JSON.parse(response.body, symbolize_names: true)
+        shop_response = json_response
         expect(shop_response[:data][:name]).to eql(@shop.name)
       end
 
